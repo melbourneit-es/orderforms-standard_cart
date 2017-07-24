@@ -4,23 +4,17 @@
 
     <div class="row">
 
-        <div class="pull-md-right col-md-9">
+        <div class="pull-md-right col-md-12">
 
             <div class="header-lined">
                 <h1>
-                    {$LANG.registerdomain}
+                    Domain Checker
                 </h1>
             </div>
 
         </div>
 
-        <div class="col-md-3 pull-md-left sidebar hidden-xs hidden-sm">
-
-            {include file="orderforms/standard_cart/sidebar-categories.tpl"}
-
-        </div>
-
-        <div class="col-md-9 pull-md-right">
+        <div class="col-md-12 pull-md-right">
 
             {include file="orderforms/standard_cart/sidebar-categories-collapsed.tpl"}
 
@@ -70,14 +64,6 @@
                         <p class="domain-unavailable domain-checker-unavailable">{lang key='orderForm.domainIsUnavailable'}</p>
                         <p class="domain-available domain-checker-available">{$LANG.domainavailable1} <strong></strong> {$LANG.domainavailable2}</p>
                         <a class="domain-contact-support btn btn-primary">{$LANG.domainContactUs}</a>
-                        <p class="domain-price">
-                            <span class="price"></span>
-                            <button class="btn btn-primary btn-add-to-cart" data-whois="0" data-domain="">
-                                <span class="to-add">{$LANG.addtocart}</span>
-                                <span class="added"><i class="glyphicon glyphicon-shopping-cart"></i> {lang key='checkout'}</span>
-                                <span class="unavailable">{$LANG.domaincheckertaken}</span>
-                            </button>
-                        </p>
                     </div>
                 </div>
 
@@ -149,140 +135,6 @@
                     </div>
                 </div>
 
-            </div>
-
-            <div class="domain-pricing">
-
-                {if $featuredTlds}
-                    <div class="featured-tlds-container">
-                        <div class="row">
-                            {foreach $featuredTlds as $num => $tldinfo}
-                                {if $num % 3 == 0 && (count($featuredTlds) - $num < 3)}
-                                    {if count($featuredTlds) - $num == 2}
-                                        <div class="col-sm-2"></div>
-                                    {else}
-                                        <div class="col-sm-4"></div>
-                                    {/if}
-                                {/if}
-                                <div class="col-sm-4 col-xs-6">
-                                    <div class="featured-tld">
-                                        <div class="img-container">
-                                            <img src="{$BASE_PATH_IMG}/tld_logos/{$tldinfo.tldNoDots}.png">
-                                        </div>
-                                        <div class="price {$tldinfo.tldNoDots}">
-                                            {if is_object($tldinfo.register)}
-                                                {$tldinfo.register->toPrefixed()}{if $tldinfo.period > 1}{lang key="orderForm.shortPerYears" years={$tldinfo.period}}{else}{lang key="orderForm.shortPerYear" years=''}{/if}
-                                            {else}
-                                                N/A
-                                            {/if}</div>
-                                    </div>
-                                </div>
-                            {/foreach}
-                        </div>
-                    </div>
-                {/if}
-
-                <h4>{lang key='pricing.browseExtByCategory'}</h4>
-
-                <div class="tld-filters">
-                    {foreach $categoriesWithCounts as $category => $count}
-                        <a href="#" data-category="{$category}" class="label label-default">{$category} ({$count})</a>
-                    {/foreach}
-                </div>
-
-                <div class="row tld-pricing-header text-center">
-                    <div class="col-sm-4 no-bg">{lang key='orderdomain'}</div>
-                    <div class="col-sm-8">
-                        <div class="row">
-                            <div class="col-xs-4">{lang key='pricing.register'}</div>
-                            <div class="col-xs-4">{lang key='pricing.transfer'}</div>
-                            <div class="col-xs-4">{lang key='pricing.renewal'}</div>
-                        </div>
-                    </div>
-                </div>
-                {foreach $pricing['pricing'] as $tld => $price}
-                    <div class="row tld-row" data-category="{foreach $price.categories as $category}|{$category}|{/foreach}">
-                        <div class="col-sm-4 two-row-center">
-                            <strong>.{$tld}</strong>
-                            {if $price.group}
-                                <span class="tld-sale-group tld-sale-group-{$price.group}">{$price.group}!</span>
-                            {/if}
-                        </div>
-                        <div class="col-sm-8">
-                            <div class="row">
-                                <div class="col-xs-4 text-center">
-                                    {if current($price.register) >= 0}
-                                        {current($price.register)}<br>
-                                        <small>{key($price.register)} {if key($price.register) > 1}{lang key="orderForm.years"}{else}{lang key="orderForm.year"}{/if}</small>
-                                    {else}
-                                        <small>N/A</small>
-                                    {/if}
-                                </div>
-                                <div class="col-xs-4 text-center">
-                                    {if current($price.transfer) > 0}
-                                        {current($price.transfer)}<br>
-                                        <small>{key($price.transfer)} {if key($price.register) > 1}{lang key="orderForm.years"}{else}{lang key="orderForm.year"}{/if}</small>
-                                    {else}
-                                        <small>N/A</small>
-                                    {/if}
-                                </div>
-                                <div class="col-xs-4 text-center">
-                                    {if current($price.renew) > 0}
-                                        {current($price.renew)}<br>
-                                        <small>{key($price.renew)} {if key($price.register) > 1}{lang key="orderForm.years"}{else}{lang key="orderForm.year"}{/if}</small>
-                                    {else}
-                                        <small>N/A</small>
-                                    {/if}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                {/foreach}
-                <div class="row tld-row no-tlds">
-                    <div class="col-xs-12 text-center">
-                        <br>
-                        {lang key='pricing.selectExtCategory'}
-                        <br><br>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="row">
-                <div class="{if $domainTransferEnabled}col-md-6{else}col-md-8 col-md-offset-2{/if}">
-                    <div class="domain-promo-box">
-
-                        <div class="clearfix">
-                            <i class="fa fa-server fa-4x"></i>
-                            <h3>{lang key='orderForm.addHosting'}</h3>
-                            <p class="font-bold text-warning">{lang key='orderForm.chooseFromRange'}</p>
-                        </div>
-
-                        <p>{lang key='orderForm.packagesForBudget'}</p>
-
-                        <a href="cart.php" class="btn btn-warning">
-                            {lang key='orderForm.exploreNow'}
-                        </a>
-                    </div>
-                </div>
-                {if $domainTransferEnabled}
-                    <div class="col-md-6">
-                        <div class="domain-promo-box">
-
-                            <div class="clearfix">
-                                <i class="fa fa-globe fa-4x"></i>
-                                <h3>{lang key='orderForm.transferToUs'}</h3>
-                                <p class="font-bold text-primary">{lang key='orderForm.transferExtend'}*</p>
-                            </div>
-
-                            <a href="cart.php?a=add&domain=transfer" class="btn btn-primary">
-                                {lang key='orderForm.transferDomain'}
-                            </a>
-
-                            <p class="small">* {lang key='orderForm.extendExclusions'}</p>
-                        </div>
-                    </div>
-                {/if}
             </div>
 
         </div>
